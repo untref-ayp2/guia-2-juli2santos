@@ -1,6 +1,9 @@
 package queue
 
-import "errors"
+import (
+	"errors"
+	"guia2/stack"
+)
 
 // Queue implementa una cola genérica sobre un arreglo dinámico.
 type Queue struct {
@@ -36,24 +39,48 @@ func (q *Queue) IsEmpty() bool {
 }
 
 type QueueS struct {
+	stack, stackAux stack.Stack
 }
 
 func (q *QueueS) Enqueue(v any) {
 	//TODO
-
+	q.stack.Push(v)
 }
 
 func (q *QueueS) Dequeue() (any, error) {
 	//TODO
-	return 0, nil
+	if q.stack.IsEmpty() && q.stackAux.IsEmpty() {
+		return nil, errors.New("Queue empty")
+	}
+	if q.stackAux.IsEmpty() {
+		// este for se ejecuta mientras la pila main tenga items, los sacac y los pushea a la aux para invertirlos
+		for !q.stack.IsEmpty() {
+			v, _ := q.stack.Pop()
+			q.stackAux.Push(v)
+		}
+	}
+
+	return q.stackAux.Pop()
 }
 
 func (q *QueueS) IsEmpty() bool {
 	//TODO
-	return false
+	return q.stack.IsEmpty() && q.stackAux.IsEmpty()
 }
 
 func (q *QueueS) Front() (any, error) {
 	//TODO
-	return 0, nil
+	if q.stack.IsEmpty() && q.stackAux.IsEmpty() {
+		return nil, errors.New("queue is empty")
+	}
+
+	if q.stackAux.IsEmpty() {
+		for !q.stack.IsEmpty() {
+			v, _ := q.stack.Pop()
+			q.stackAux.Push(v)
+		}
+	}
+
+	return q.stackAux.Top()
+
 }
