@@ -3,51 +3,57 @@ package queue
 import "errors"
 
 // Queue implementa una cola genérica sobre un arreglo dinámico.
-type Queue []any
+type Queue struct {
+	items []any
+}
 
 // Enqueue agrega un elemento a la cola. O(1)
 func (q *Queue) Enqueue(v any) {
-	*q = append(*q, v)
+	q.items = append(q.items, v)
 }
 
 // Dequeue saca un elemento de la cola. O(1)
 func (q *Queue) Dequeue() (any, error) {
-	if len(*q) == 0 {
+	if q.IsEmpty() {
 		return nil, errors.New("queue is empty")
 	}
-	head := (*q)[0]
-	*q = (*q)[1:]
+	head := (q.items)[0]
+	q.items = (q.items)[1:]
 	return head, nil
 }
 
 // Front devuelve el elemento del frente de la cola. O(1)
 func (q *Queue) Front() (any, error) {
-	if len(*q) == 0 {
+	if q.IsEmpty() {
 		return nil, errors.New("queue is empty")
 	}
-	return (*q)[0], nil
+	return (q.items)[0], nil
 }
 
 // IsEmpty verifica si la cola esta vacia. O(1)
 func (q *Queue) IsEmpty() bool {
-	return len(*q) == 0
+	return len(q.items) == 0
 }
 
-
-type QueueS //TODO
+type QueueS struct {
+}
 
 func (q *QueueS) Enqueue(v any) {
-    //TODO
+	//TODO
+
 }
 
 func (q *QueueS) Dequeue() (any, error) {
-    //TODO
+	//TODO
+	return 0, nil
 }
 
 func (q *QueueS) IsEmpty() bool {
-    //TODO
+	//TODO
+	return false
 }
 
 func (q *QueueS) Front() (any, error) {
-    //TODO
+	//TODO
+	return 0, nil
 }
